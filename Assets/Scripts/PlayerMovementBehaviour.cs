@@ -55,22 +55,24 @@ public class PlayerMovementBehaviour : MonoBehaviour
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, _distanceToGround + 0.01f);
 
         //Update position based on player input
-        _velocity.x = Input.GetAxis("Horizontal");
         _rigidbody.MovePosition(transform.position + _velocity * _moveSpeed * Time.deltaTime);
-
-        //If the player pressed the jump button and is on the gorund, add a force upwards
-        if (Input.GetButtonDown("Jump") && _isGrounded)
-        {
-            _rigidbody.isKinematic = false;
-            _rigidbody.AddForce(Vector3.up * _jumpScale, ForceMode.Impulse);
-            _isGrounded = false;
-        }
-
-        //Set the rigidbody to be kinematic if the player is back on the ground
-        _rigidbody.isKinematic = _isGrounded;
 
         //Update player rotation
         if (Velocity.magnitude > 0)
             transform.forward = Velocity.normalized;
+    }
+
+    private void Update()
+    {
+        _velocity.x = Input.GetAxis("Horizontal");
+
+        if (!_isGrounded) return;
+
+        //If the player pressed the jump button and is on the gorund, add a force upwards
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _rigidbody.AddForce(Vector3.up * _jumpScale, ForceMode.Impulse);
+            _isGrounded = false;
+        }
     }
 }
