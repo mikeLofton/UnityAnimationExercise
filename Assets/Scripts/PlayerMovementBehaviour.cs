@@ -35,6 +35,7 @@ public class PlayerMovementBehaviour : MonoBehaviour
         _collider = GetComponent<Collider>();
         //Get the the distance from the object center to the ground 
         _distanceToGround = _collider.bounds.extents.y;
+        WinBoxBehaviour.OnWin += () => { transform.LookAt(Camera.main.transform); _canMove = false; };
     }
 
     public void DisableMovement()
